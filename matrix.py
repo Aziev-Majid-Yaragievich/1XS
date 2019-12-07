@@ -1,37 +1,43 @@
 from colorama import Fore, Style, Back #Import библиотек
+import sqlite3
 import sys
+import time
 
 #Тест по информатике
 def informatic():
+    #Вопросы
     voprosi = [
-        'Устройство вывода (возможно несколько вариантов)',
-        'Устройтво ввода (возможно несколько вариантов)',
-        'Монитор - это (возможно несколько вариантов)',
-        'Windows - это (возможно несколько вариантов)'
+        'Устройство вывода',
+        'Устройтво ввода',
+        'Python - это',
+        'Windows - это'
     ]
+    #Варианты ответов
     variants = [
-        ['Принтер', 'Клавиатура', 'Мышка', 'Микрофон'],
-        ['Клавиатура', 'Микрофон', 'Монитор', 'Наушники'],
-        ['Устройство ввода','Устройство вывода'],
-        ['Операционная Система', 'Программа для игр']
+        ['принтер', 'клавиатура', 'мышка', 'микрофон'],
+        ['микрофон', 'монитор', 'наушники'],
+        ['ЯП','ОС'],
+        ['ОС', 'Linux']
     ]
+    #Правильные ответы
     pravilnyOtvet = [
-        ['Принтер'],
-        ['Клавиатура', 'Микрофон'],
-        ['Устройство вывода'],
-        ['Операционная Система']
+        ['принтер'],
+        ['микрофон'],
+        ['яп'],
+        ['ос']
     ]
     count = 0 # текущий номер вопроса чтобы получить набор правильных ответов для этого вопроса
     userResponse = [] # Совподение ответов пользователя с правильными ответами
     userResult = [] 
     for i in voprosi:
+        print('')
         print(Fore.RED + i)
         print(Fore.GREEN + "Варианты ответов:")
         for j in variants[count]:
             print(Fore.BLUE + j)
         #Орагнизовать ввод ответов от пользователя
         response = input(Fore.GREEN + 'Ваш ответ: ')
-
+        response = response.lower()
         #Организовать проверку отеста от пользователя
         responseMassive = response.split()
         userResult.append(responseMassive)
@@ -47,7 +53,7 @@ def informatic():
         print('На вопрос номер ', i+1)
         print(voprosi[i])
         print('Пользователь', name ,'дал ответы:', userResult[i])
-        print('Правильные ответы:', pravilnyOtvet[i])
+        print('Правильные ответы:', userResult[i])
         print('--------')
 
 
@@ -60,23 +66,21 @@ def informatic():
         print ('На вопрос с номером ',nuvQuestion,' пользователь ответил правильлно на ',sum(i.values()),' из ',i.__len__())
         totalRuleResponsesForUser += sum(i.values())
         totalResponses += i.__len__()
+    global score
     score = round ((totalRuleResponsesForUser / totalResponses) * 5)
     print('Результат тестирования: ',score)
 
-print("Важно, надо вводить варианты через пробел.")
+print('Привет! Это программа beta Гранд')
+time.sleep(1)
+
+name = input('Ваше имя: ')
+fam = input('Ваша фамилия: ')
+
+if name == '' or fam == '':
+    print('Так не пойдёт дружище :), заполняй своё имя и фамилию!')
+    sys.exit()
 
 pred = 'Информатика'
-clas = 'Мажид', 'Юрий', 'Наум', 'Муслим'
-
-#Имя пользователя
-name = input("Ваше имя: ")
-if name in clas:
-    print("Привет! Можешь зайти!")
-else:
-    print("Вас нету в списках пользователей!")
-    print('Ну ладно, можете войти')
-#Вывод существующих предметов
-print('')
 
 print("Наши предметы:", pred)
 
@@ -88,4 +92,19 @@ if (test.lower() == "информатика"):
     informatic()
 else:
     print("Пока что этого у нас нет")
+    sys.exit()
+
+conn = sqlite3.connect('sowpods.csv')
+cursor = conn.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS pan(name TEXT, fam TEXT, pred TEXT, score INT)''')
+conn.commit()
+# Создаем курсор - это специальный объект который делает запросы и получает их результаты
+# Делаем INSERT запрос к базе данных, используя обычный SQL-синтаксис
+cursor.execute('''INSERT INTO pan VALUES(?, ?, ?, ?)''', (name, fam, pred, score))
+
+# Если мы не просто читаем, но и вносим изменения в базу данных - необходимо сохранить транзакцию
+conn.commit()
+conn.close()
+
+
 
