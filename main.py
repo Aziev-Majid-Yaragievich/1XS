@@ -88,7 +88,7 @@ print("Наши предметы:", pred)
 test = input('Какой предмет вы хотите выбрать? ')
 print('')
 
-if (test.lower() == "информатика"):
+if (test.lower() == "информатика") or (test.lower() == 'инфа') or (test.lower() == 'инфо'):
     informatic()
 else:
     print("Пока что этого у нас нет")
@@ -102,9 +102,5 @@ conn.commit()
 # Делаем INSERT запрос к базе данных, используя обычный SQL-синтаксис
 cursor.execute('''INSERT INTO pan VALUES(?, ?, ?, ?)''', (name, fam, pred, score))
 
-# Если мы не просто читаем, но и вносим изменения в базу данных - необходимо сохранить транзакцию
 conn.commit()
 conn.close()
-
-
-
