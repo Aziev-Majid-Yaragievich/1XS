@@ -5,6 +5,15 @@ import time
 
 #Тест по информатике
 def informatic():
+    print(Back.GREEN+Fore.BLACK+'Вы выбрали информатику!')
+    print(Back.BLACK+Fore.WHITE+'')
+    time.sleep(1)#Засыпание программы на 1 секунду, что-бы пользователь прочитал содержимое текста
+    #Условия решений задач
+    print('ВАЖНО!')
+    time.sleep(0.5)
+    print('Ответ должен содержать имено слово!')
+    time.sleep(2)
+    null = input('Нажмините ENTER, если готовы начать:')
     #Вопросы
     voprosi = [
         'Устройство вывода',
@@ -31,12 +40,13 @@ def informatic():
     userResult = [] 
     for i in voprosi:
         print('')
-        print(Fore.RED + i)
+        print(Fore.RED + 'Вопрос: ', i)
         print(Fore.GREEN + "Варианты ответов:")
         for j in variants[count]:
-            print(Fore.BLUE + j)
+            print(Fore.WHITE + j)
         #Орагнизовать ввод ответов от пользователя
         response = input(Fore.GREEN + 'Ваш ответ: ')
+        print(Fore.WHITE + '')
         response = response.lower()
         #Организовать проверку отеста от пользователя
         responseMassive = response.split()
@@ -50,6 +60,7 @@ def informatic():
         count+=1
     # Печать результатов ответов пользователя
     for i in range(voprosi.__len__()):
+        time.sleep(0.2)#Что-бы пользователь учпел немного прочитать
         print('На вопрос номер ', i+1)
         print(voprosi[i])
         print('Пользователь', name ,'дал ответы:', userResult[i])
@@ -70,11 +81,13 @@ def informatic():
     score = round ((totalRuleResponsesForUser / totalResponses) * 5)
     print('Результат тестирования: ',score)
 
-print('Привет! Это программа beta Гранд')
+print(Back.GREEN+Fore.BLACK+'Привет! Это программа beta Гранд')
+print(Back.BLACK+Fore.WHITE)
 time.sleep(1)
 
 name = input('Ваше имя: ')
 fam = input('Ваша фамилия: ')
+print('')
 
 if name == '' or fam == '':
     print('Так не пойдёт дружище :), заполняй своё имя и фамилию!')
@@ -88,11 +101,13 @@ print("Наши предметы:", pred)
 test = input('Какой предмет вы хотите выбрать? ')
 print('')
 
-if (test.lower() == "информатика") or (test.lower() == 'инфа') or (test.lower() == 'инфо'):
+#В случае выбора информатики
+if (test.lower() == "информатика") or (test.lower() == 'инфа') or (test.lower() == 'инфо') or test == '1':
     informatic()
+#В случае выбора другого варианта
 else:
     print("Пока что этого у нас нет")
-    sys.exit()
+    sys.exit() #Выход иг программы
 
 conn = sqlite3.connect('sowpods.csv')
 cursor = conn.cursor()
